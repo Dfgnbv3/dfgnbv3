@@ -1,16 +1,16 @@
 <?php
 /**
- * The base configuration for WordPress
+ * Основные параметры WordPress.
  *
- * The wp-config.php creation script uses this file during the
- * installation. You don't have to use the web site, you can
- * copy this file to "wp-config.php" and fill in the values.
+ * Скрипт для создания wp-config.php использует этот файл в процессе
+ * установки. Необязательно использовать веб-интерфейс, можно
+ * скопировать файл в "wp-config.php" и заполнить значения вручную.
  *
- * This file contains the following configurations:
+ * Этот файл содержит следующие параметры:
  *
- * * MySQL settings
- * * Secret keys
- * * Database table prefix
+ * * Настройки MySQL
+ * * Секретные ключи
+ * * Префикс таблиц базы данных
  * * ABSPATH
  *
  * @link https://codex.wordpress.org/Editing_wp-config.php
@@ -18,75 +18,72 @@
  * @package WordPress
  */
 
-// ** MySQL settings - You can get this info from your web host ** //
-/** The name of the database for WordPress */
-define('DB_NAME', 'igas_db');
+// ** Параметры MySQL: Эту информацию можно получить у вашего хостинг-провайдера ** //
+/** Имя базы данных для WordPress */
+define( 'DB_NAME', 'dfgnbv3_db' );
 
-/** MySQL database username */
-define('DB_USER', 'igas_db');
+/** Имя пользователя MySQL */
+define( 'DB_USER', 'root' );
 
-/** MySQL database password */
-define('DB_PASSWORD', 'LHUWJzJv');
+/** Пароль к базе данных MySQL */
+define( 'DB_PASSWORD', '' );
 
-/** MySQL hostname */
-define('DB_HOST', 'igas.mysql.tools');
+/** Имя сервера MySQL */
+define( 'DB_HOST', 'localhost' );
 
-/** Database Charset to use in creating database tables. */
-define('DB_CHARSET', 'utf8');
+/** Кодировка базы данных для создания таблиц. */
+define( 'DB_CHARSET', 'utf8mb4' );
 
-/** The Database Collate type. Don't change this if in doubt. */
-define('DB_COLLATE', '');
+/** Схема сопоставления. Не меняйте, если не уверены. */
+define( 'DB_COLLATE', '' );
 
 /**#@+
- * Authentication Unique Keys and Salts.
+ * Уникальные ключи и соли для аутентификации.
  *
- * Change these to different unique phrases!
- * You can generate these using the {@link https://api.wordpress.org/secret-key/1.1/salt/ WordPress.org secret-key service}
- * You can change these at any point in time to invalidate all existing cookies. This will force all users to have to log in again.
+ * Смените значение каждой константы на уникальную фразу.
+ * Можно сгенерировать их с помощью {@link https://api.wordpress.org/secret-key/1.1/salt/ сервиса ключей на WordPress.org}
+ * Можно изменить их, чтобы сделать существующие файлы cookies недействительными. Пользователям потребуется авторизоваться снова.
  *
  * @since 2.6.0
  */
-define('AUTH_KEY',         'mBug@rU7(i*(7lzb)Btll&nXizpOjX2HI&waHLV%ROa%9i2b&VqfbmGO*fAlz&eC');
-define('SECURE_AUTH_KEY',  '%X#3DCPZau%R6ergH@&4@WQ1znA)*z#q9B%xte&dhOPLvZLTIQvHGx0muxNui#Ef');
-define('LOGGED_IN_KEY',    'GKtjff%n@H8sMFsM%Y)HxfMgyO@FDGctQfrJEicqkOeWFt7TQ1H7!@uWL^jJ%WTE');
-define('NONCE_KEY',        '62t@0PR@*erMJIOI*LzMf3whXV#AFiloUn*d0O0dj&ZkBllwHtD9H2^US4vvv%B7');
-define('AUTH_SALT',        'Nl2wL7)eOKG1&KS3w*W4HW1oPuprjOa#dPvaWDfuCqrJV%vp52bxhun@CnpONGkz');
-define('SECURE_AUTH_SALT', 'yKllIKdp%22!LLjr3AXq!uk2&9KzzW9NKqg*&iVY3^05XsXoM6G!cPee5Z8X7Ixq');
-define('LOGGED_IN_SALT',   'Az9W2RfA%G6mhx7)9(zlkLnn^YYlEVf#(Oa!*fYHdom3!QqRtErX3gWSDOYB!Z10');
-define('NONCE_SALT',       '7UPSqbEeQJJ@Sa&LAMOhJ1hvqkIhr(dByyRXI)@MZ^qXBR@W(Q@23mNXi9F&tR0S');
+define( 'AUTH_KEY',         'IkfUSc..ha8SCpUnsigliv(+_]yhRDVcdkZ(Z2l}Z|vZ[+ d}K[iQDZQ O9szBS@' );
+define( 'SECURE_AUTH_KEY',  'R.rn&iGZJmhX&W+7A%{?AxI8Ek9@(xT<DLW]Qy[nBH}2!>(vyC>gVq`1MFKOq#&C' );
+define( 'LOGGED_IN_KEY',    'bO]Drt+orR*vj>KJ9^gU3?8y~0sc`3[UzdtT01`nPjfD+baifHIC0r|Y*a]%HA0x' );
+define( 'NONCE_KEY',        'qw^~ssEXc,O):!N([V0$PHe$|n3l^6WH/:c$ZJ4ni^x6E$gL)F}oh:[+L)3eA?ii' );
+define( 'AUTH_SALT',        'O  G7-=jO#GQx@7Kz6k4[T74?/=^$P#tkGzcMgyVHCZACqPcS&z/eu*yLd7#n)nA' );
+define( 'SECURE_AUTH_SALT', '01ND2#FTR3Zy5?k+k6w0@0(OU9v2ND7lAfuZMk$W6Qp6c(@zGos{jnb,po^FsHby' );
+define( 'LOGGED_IN_SALT',   'K/:HmhkBh9C]h,j8OqGOg#8Qcm&q?m5%Z/7g)2AEmKb5`[+,91jY:H]S,TWU>%$e' );
+define( 'NONCE_SALT',       'd5K23vB)7rot}O:<_eyq]Mr[MnZ%Nz:o-pw@mk^R+hxJM~1ZcmJ)&8flB1GqbxsE' );
+
 /**#@-*/
 
 /**
- * WordPress Database Table prefix.
+ * Префикс таблиц в базе данных WordPress.
  *
- * You can have multiple installations in one database if you give each
- * a unique prefix. Only numbers, letters, and underscores please!
+ * Можно установить несколько сайтов в одну базу данных, если использовать
+ * разные префиксы. Пожалуйста, указывайте только цифры, буквы и знак подчеркивания.
  */
-$table_prefix  = 'wp_';
+$table_prefix = 'wp_';
 
 /**
- * For developers: WordPress debugging mode.
+ * Для разработчиков: Режим отладки WordPress.
  *
- * Change this to true to enable the display of notices during development.
- * It is strongly recommended that plugin and theme developers use WP_DEBUG
- * in their development environments.
+ * Измените это значение на true, чтобы включить отображение уведомлений при разработке.
+ * Разработчикам плагинов и тем настоятельно рекомендуется использовать WP_DEBUG
+ * в своём рабочем окружении.
  *
- * For information on other constants that can be used for debugging,
- * visit the Codex.
+ * Информацию о других отладочных константах можно найти в Кодексе.
  *
  * @link https://codex.wordpress.org/Debugging_in_WordPress
  */
-define('WP_DEBUG', false);
+define( 'WP_DEBUG', false );
 
-/* That's all, stop editing! Happy blogging. */
+/* Это всё, дальше не редактируем. Успехов! */
 
-/** Absolute path to the WordPress directory. */
-if ( !defined('ABSPATH') )
-	define('ABSPATH', dirname(__FILE__) . '/');
+/** Абсолютный путь к директории WordPress. */
+if ( ! defined( 'ABSPATH' ) ) {
+	define( 'ABSPATH', dirname( __FILE__ ) . '/' );
+}
 
-/** Sets up WordPress vars and included files. */
-require_once(ABSPATH . 'wp-settings.php');
-
-define( 'WP_ALLOW_MULTISITE', true );
-
-define ('FS_METHOD', 'direct');
+/** Инициализирует переменные WordPress и подключает файлы. */
+require_once( ABSPATH . 'wp-settings.php' );
