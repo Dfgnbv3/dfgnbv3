@@ -18,16 +18,17 @@ class WPSEO_Bulk_Title_Editor_List_Table extends WPSEO_Bulk_List_Table {
 	 */
 	protected $page_type = 'title';
 
+
 	/**
 	 * Settings with are used in __construct.
 	 *
 	 * @var array
 	 */
-	protected $settings = [
+	protected $settings = array(
 		'singular' => 'wpseo_bulk_title',
 		'plural'   => 'wpseo_bulk_titles',
 		'ajax'     => true,
-	];
+	);
 
 	/**
 	 * The field in the database where meta field is saved.
@@ -43,12 +44,12 @@ class WPSEO_Bulk_Title_Editor_List_Table extends WPSEO_Bulk_List_Table {
 	 */
 	public function get_columns() {
 
-		$columns = [
+		$columns = array(
 			/* translators: %1$s expands to Yoast SEO */
 			'col_existing_yoast_seo_title' => sprintf( __( 'Existing %1$s Title', 'wordpress-seo' ), 'Yoast SEO' ),
 			/* translators: %1$s expands to Yoast SEO */
 			'col_new_yoast_seo_title'      => sprintf( __( 'New %1$s Title', 'wordpress-seo' ), 'Yoast SEO' ),
-		];
+		);
 
 		return $this->merge_columns( $columns );
 	}
@@ -65,14 +66,11 @@ class WPSEO_Bulk_Title_Editor_List_Table extends WPSEO_Bulk_List_Table {
 	protected function parse_page_specific_column( $column_name, $record, $attributes ) {
 
 		// Fill meta data if exists in $this->meta_data.
-		$meta_data = ( ! empty( $this->meta_data[ $record->ID ] ) ) ? $this->meta_data[ $record->ID ] : [];
+		$meta_data = ( ! empty( $this->meta_data[ $record->ID ] ) ) ? $this->meta_data[ $record->ID ] : array();
 
 		switch ( $column_name ) {
 			case 'col_existing_yoast_seo_title':
-				// @todo Inconsistent return/echo behavior R.
-				// I traced the escaping of the attributes to WPSEO_Bulk_List_Table::column_attributes.
-				// The output of WPSEO_Bulk_List_Table::parse_meta_data_field is properly escaped.
-				// phpcs:ignore WordPress.Security.EscapeOutput
+				// @todo Inconsistent echo/return behavior R.
 				echo $this->parse_meta_data_field( $record->ID, $attributes );
 				break;
 

@@ -32,6 +32,7 @@ class Yoast_Dismissable_Notice_Ajax {
 	 */
 	const FOR_SITE = 'option';
 
+
 	/**
 	 * Name of the notice that will be dismissed.
 	 *
@@ -56,7 +57,7 @@ class Yoast_Dismissable_Notice_Ajax {
 		$this->notice_name = $notice_name;
 		$this->notice_type = $notice_type;
 
-		add_action( 'wp_ajax_wpseo_dismiss_' . $notice_name, [ $this, 'dismiss_notice' ] );
+		add_action( 'wp_ajax_wpseo_dismiss_' . $notice_name, array( $this, 'dismiss_notice' ) );
 	}
 
 	/**

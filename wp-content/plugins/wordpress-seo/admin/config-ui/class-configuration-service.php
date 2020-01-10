@@ -11,43 +11,31 @@
 class WPSEO_Configuration_Service {
 
 	/**
-	 * Class holding the onboarding wizard configuration.
-	 *
 	 * @var WPSEO_Configuration_Structure
 	 */
 	protected $structure;
 
 	/**
-	 * Class holding the onboarding wizard components.
-	 *
 	 * @var WPSEO_Configuration_Components
 	 */
 	protected $components;
 
 	/**
-	 * Class handling the onboarding wizard persistence.
-	 *
 	 * @var WPSEO_Configuration_Storage
 	 */
 	protected $storage;
 
 	/**
-	 * Class handling the onboarding wizard endpoint.
-	 *
 	 * @var WPSEO_Configuration_Endpoint
 	 */
 	protected $endpoint;
 
 	/**
-	 * Adapter that converts onboarding wizard configuration to WordPress options.
-	 *
 	 * @var WPSEO_Configuration_Options_Adapter
 	 */
 	protected $adapter;
 
 	/**
-	 * Class handling the onboarding wizard endpoint.
-	 *
 	 * @var WPSEO_Configuration_Translations
 	 */
 	protected $translations;
@@ -162,11 +150,11 @@ class WPSEO_Configuration_Service {
 		$steps        = $this->structure->retrieve();
 		$translations = $this->translations->retrieve();
 
-		return [
+		return array(
 			'fields'       => $fields,
 			'steps'        => $steps,
 			'translations' => $translations,
-		];
+		);
 	}
 
 	/**

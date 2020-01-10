@@ -18,25 +18,6 @@ class WPSEO_Taxonomy_Sitemap_Provider implements WPSEO_Sitemap_Provider {
 	protected static $image_parser;
 
 	/**
-	 * Determines whether images should be included in the XML sitemap.
-	 *
-	 * @var bool
-	 */
-	private $include_images;
-
-	/**
-	 * Set up object properties for data reuse.
-	 */
-	public function __construct() {
-		/**
-		 * Filter - Allows excluding images from the XML sitemap.
-		 *
-		 * @param bool unsigned True to include, false to exclude.
-		 */
-		$this->include_images = apply_filters( 'wpseo_xml_sitemap_include_images', true );
-	}
-
-	/**
 	 * Check if provider supports given item type.
 	 *
 	 * @param string $type Type string to check for.
@@ -55,21 +36,19 @@ class WPSEO_Taxonomy_Sitemap_Provider implements WPSEO_Sitemap_Provider {
 	}
 
 	/**
-	 * Retrieves the links for the sitemap.
-	 *
 	 * @param int $max_entries Entries per sitemap.
 	 *
 	 * @return array
 	 */
 	public function get_index_links( $max_entries ) {
 
-		$taxonomies = get_taxonomies( [ 'public' => true ], 'objects' );
+		$taxonomies = get_taxonomies( array( 'public' => true ), 'objects' );
 
 		if ( empty( $taxonomies ) ) {
-			return [];
+			return array();
 		}
 
-		$taxonomy_names = array_filter( array_keys( $taxonomies ), [ $this, 'is_valid_taxonomy' ] );
+		$taxonomy_names = array_filter( array_keys( $taxonomies ), array( $this, 'is_valid_taxonomy' ) );
 		$taxonomies     = array_intersect_key( $taxonomies, array_flip( $taxonomy_names ) );
 
 		// Retrieve all the taxonomies and their terms so we can do a proper count on them.
@@ -81,21 +60,14 @@ class WPSEO_Taxonomy_Sitemap_Provider implements WPSEO_Sitemap_Provider {
 		 */
 		$hide_empty = apply_filters( 'wpseo_sitemap_exclude_empty_terms', true, $taxonomy_names );
 
-		$all_taxonomies = [];
+		$all_taxonomies = array();
+
+		$term_args = array(
+			'hide_empty' => $hide_empty,
+			'fields'     => 'ids',
+		);
 
 		foreach ( $taxonomy_names as $taxonomy_name ) {
-			/**
-			 * Filter the setting of excluding empty terms from the XML sitemap for a specific taxonomy.
-			 *
-			 * @param boolean $exclude       Defaults to the sitewide setting.
-			 * @param string  $taxonomy_name The name of the taxonomy being processed.
-			 */
-			$hide_empty_tax = apply_filters( 'wpseo_sitemap_exclude_empty_terms_taxonomy', $hide_empty, $taxonomy_name );
-
-			$term_args      = [
-				'hide_empty' => $hide_empty_tax,
-				'fields'     => 'ids',
-			];
 			$taxonomy_terms = get_terms( $taxonomy_name, $term_args );
 
 			if ( count( $taxonomy_terms ) > 0 ) {
@@ -103,7 +75,7 @@ class WPSEO_Taxonomy_Sitemap_Provider implements WPSEO_Sitemap_Provider {
 			}
 		}
 
-		$index = [];
+		$index = array();
 
 		foreach ( $taxonomies as $tax_name => $tax ) {
 
@@ -134,18 +106,18 @@ class WPSEO_Taxonomy_Sitemap_Provider implements WPSEO_Sitemap_Provider {
 					continue;
 				}
 
-				$args  = [
+				$args  = array(
 					'post_type'      => $tax->object_type,
-					'tax_query'      => [
-						[
+					'tax_query'      => array(
+						array(
 							'taxonomy' => $tax_name,
 							'terms'    => $terms,
-						],
-					],
+						),
+					),
 					'orderby'        => 'modified',
 					'order'          => 'DESC',
 					'posts_per_page' => 1,
-				];
+				);
 				$query = new WP_Query( $args );
 
 				if ( $query->have_posts() ) {
@@ -155,10 +127,10 @@ class WPSEO_Taxonomy_Sitemap_Provider implements WPSEO_Sitemap_Provider {
 					$date = $last_modified_gmt;
 				}
 
-				$index[] = [
+				$index[] = array(
 					'loc'     => WPSEO_Sitemaps_Router::get_base_url( $tax_name . '-sitemap' . $current_page . '.xml' ),
 					'lastmod' => $date,
-				];
+				);
 			}
 		}
 
@@ -179,7 +151,7 @@ class WPSEO_Taxonomy_Sitemap_Provider implements WPSEO_Sitemap_Provider {
 	public function get_sitemap_links( $type, $max_entries, $current_page ) {
 		global $wpdb;
 
-		$links = [];
+		$links = array();
 		if ( ! $this->handles_type( $type ) ) {
 			return $links;
 		}
@@ -190,10 +162,8 @@ class WPSEO_Taxonomy_Sitemap_Provider implements WPSEO_Sitemap_Provider {
 		$offset = ( $current_page > 1 ) ? ( ( $current_page - 1 ) * $max_entries ) : 0;
 
 		/** This filter is documented in inc/sitemaps/class-taxonomy-sitemap-provider.php */
-		$hide_empty = apply_filters( 'wpseo_sitemap_exclude_empty_terms', true, [ $taxonomy->name ] );
-		/** This filter is documented in inc/sitemaps/class-taxonomy-sitemap-provider.php */
-		$hide_empty_tax = apply_filters( 'wpseo_sitemap_exclude_empty_terms_taxonomy', $hide_empty, $taxonomy->name );
-		$terms          = get_terms( $taxonomy->name, [ 'hide_empty' => $hide_empty_tax ] );
+		$hide_empty = apply_filters( 'wpseo_sitemap_exclude_empty_terms', true, array( $taxonomy->name ) );
+		$terms      = get_terms( $taxonomy->name, array( 'hide_empty' => $hide_empty ) );
 
 		// If the total term count is lower than the offset, we are on an invalid page.
 		if ( count( $terms ) < $offset ) {
@@ -221,20 +191,9 @@ class WPSEO_Taxonomy_Sitemap_Provider implements WPSEO_Sitemap_Provider {
 				AND		p.post_password = ''
 		";
 
-		/**
-		 * Filter: 'wpseo_exclude_from_sitemap_by_term_ids' - Allow excluding terms by ID.
-		 *
-		 * @api array $terms_to_exclude The terms to exclude.
-		 */
-		$terms_to_exclude = apply_filters( 'wpseo_exclude_from_sitemap_by_term_ids', [] );
-
 		foreach ( $terms as $term ) {
 
-			if ( in_array( $term->term_id, $terms_to_exclude, true ) ) {
-				continue;
-			}
-
-			$url = [];
+			$url = array();
 
 			$tax_noindex = WPSEO_Taxonomy_Meta::get_term_meta( $term, $term->taxonomy, 'noindex' );
 
@@ -248,11 +207,8 @@ class WPSEO_Taxonomy_Sitemap_Provider implements WPSEO_Sitemap_Provider {
 				$url['loc'] = get_term_link( $term, $term->taxonomy );
 			}
 
-			$url['mod'] = $wpdb->get_var( $wpdb->prepare( $sql, $term->taxonomy, $term->term_id ) );
-
-			if ( $this->include_images ) {
-				$url['images'] = $this->get_image_parser()->get_term_images( $term );
-			}
+			$url['mod']    = $wpdb->get_var( $wpdb->prepare( $sql, $term->taxonomy, $term->term_id ) );
+			$url['images'] = $this->get_image_parser()->get_term_images( $term );
 
 			// Deprecated, kept for backwards data compat. R.
 			$url['chf'] = 'daily';
@@ -282,7 +238,7 @@ class WPSEO_Taxonomy_Sitemap_Provider implements WPSEO_Sitemap_Provider {
 			return false;
 		}
 
-		if ( in_array( $taxonomy_name, [ 'link_category', 'nav_menu' ], true ) ) {
+		if ( in_array( $taxonomy_name, array( 'link_category', 'nav_menu' ), true ) ) {
 			return false;
 		}
 

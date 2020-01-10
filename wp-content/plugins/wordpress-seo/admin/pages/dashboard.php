@@ -37,21 +37,24 @@ $tabs->add_tab(
 	new WPSEO_Option_Tab(
 		'dashboard',
 		__( 'Dashboard', 'wordpress-seo' ),
-		[
+		array(
+			'video_url'   => WPSEO_Shortlinker::get( 'https://yoa.st/screencast-notification-center' ),
 			'save_button' => false,
-		]
+		)
 	)
 );
 $tabs->add_tab(
 	new WPSEO_Option_Tab(
 		'features',
-		__( 'Features', 'wordpress-seo' )
+		__( 'Features', 'wordpress-seo' ),
+		array( 'video_url' => WPSEO_Shortlinker::get( 'https://yoa.st/screencast-features' ) )
 	)
 );
 $tabs->add_tab(
 	new WPSEO_Option_Tab(
 		'webmaster-tools',
-		__( 'Webmaster Tools', 'wordpress-seo' )
+		__( 'Webmaster Tools', 'wordpress-seo' ),
+		array( 'video_url' => WPSEO_Shortlinker::get( 'https://yoa.st/screencast-general-search-console' ) )
 	)
 );
 

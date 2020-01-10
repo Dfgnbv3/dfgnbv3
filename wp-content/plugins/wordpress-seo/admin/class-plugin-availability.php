@@ -11,11 +11,9 @@
 class WPSEO_Plugin_Availability {
 
 	/**
-	 * Holds the plugins.
-	 *
 	 * @var array
 	 */
-	protected $plugins = [];
+	protected $plugins = array();
 
 	/**
 	 * Registers the plugins so we can access them.
@@ -29,8 +27,8 @@ class WPSEO_Plugin_Availability {
 	 * Registers all the available Yoast SEO plugins.
 	 */
 	protected function register_yoast_plugins() {
-		$this->plugins = [
-			'yoast-seo-premium' => [
+		$this->plugins = array(
+			'yoast-seo-premium' => array(
 				'url'          => WPSEO_Shortlinker::get( 'https://yoa.st/1y7' ),
 				'title'        => 'Yoast SEO Premium',
 				'description'  => sprintf(
@@ -42,9 +40,9 @@ class WPSEO_Plugin_Availability {
 				'slug'         => 'wordpress-seo-premium/wp-seo-premium.php',
 				'version_sync' => true,
 				'premium'      => true,
-			],
+			),
 
-			'video-seo-for-wordpress-seo-by-yoast' => [
+			'video-seo-for-wordpress-seo-by-yoast' => array(
 				'url'          => WPSEO_Shortlinker::get( 'https://yoa.st/1y8' ),
 				'title'        => 'Video SEO',
 				'description'  => __( 'Optimize your videos to show them off in search results and get more clicks!', 'wordpress-seo' ),
@@ -52,9 +50,9 @@ class WPSEO_Plugin_Availability {
 				'slug'         => 'wpseo-video/video-seo.php',
 				'version_sync' => true,
 				'premium'      => true,
-			],
+			),
 
-			'yoast-news-seo' => [
+			'yoast-news-seo' => array(
 				'url'          => WPSEO_Shortlinker::get( 'https://yoa.st/1y9' ),
 				'title'        => 'News SEO',
 				'description'  => __( 'Are you in Google News? Increase your traffic from Google News by optimizing for it!', 'wordpress-seo' ),
@@ -62,9 +60,9 @@ class WPSEO_Plugin_Availability {
 				'slug'         => 'wpseo-news/wpseo-news.php',
 				'version_sync' => true,
 				'premium'      => true,
-			],
+			),
 
-			'local-seo-for-yoast-seo' => [
+			'local-seo-for-yoast-seo' => array(
 				'url'          => WPSEO_Shortlinker::get( 'https://yoa.st/1ya' ),
 				'title'        => 'Local SEO',
 				'description'  => __( 'Rank better locally and in Google Maps, without breaking a sweat!', 'wordpress-seo' ),
@@ -72,9 +70,9 @@ class WPSEO_Plugin_Availability {
 				'slug'         => 'wordpress-seo-local/local-seo.php',
 				'version_sync' => true,
 				'premium'      => true,
-			],
+			),
 
-			'yoast-woocommerce-seo' => [
+			'yoast-woocommerce-seo' => array(
 				'url'           => WPSEO_Shortlinker::get( 'https://yoa.st/1o0' ),
 				'title'         => 'Yoast WooCommerce SEO',
 				'description'   => sprintf(
@@ -82,18 +80,18 @@ class WPSEO_Plugin_Availability {
 					__( 'Seamlessly integrate WooCommerce with %1$s and get extra features!', 'wordpress-seo' ),
 					'Yoast SEO'
 				),
-				'_dependencies' => [
-					'WooCommerce' => [
+				'_dependencies' => array(
+					'WooCommerce' => array(
 						'slug' => 'woocommerce/woocommerce.php',
-					],
-				],
+					),
+				),
 				'installed'     => false,
 				'slug'          => 'wpseo-woocommerce/wpseo-woocommerce.php',
 				'version_sync'  => true,
 				'premium'       => true,
-			],
+			),
 
-			'yoast-acf-analysis' => [
+			'yoast-acf-analysis' => array(
 				'url'           => 'https://wordpress.org/plugins/acf-content-analysis-for-yoast-seo/',
 				'title'         => 'ACF Content Analysis for Yoast SEO',
 				'description'   => sprintf(
@@ -104,14 +102,32 @@ class WPSEO_Plugin_Availability {
 				),
 				'installed'     => false,
 				'slug'          => 'acf-content-analysis-for-yoast-seo/yoast-acf-analysis.php',
-				'_dependencies' => [
-					'Advanced Custom Fields' => [
+				'_dependencies' => array(
+					'Advanced Custom Fields' => array(
 						'slug' => 'advanced-custom-fields/acf.php',
-					],
-				],
+					),
+				),
 				'version_sync'  => false,
-			],
-		];
+			),
+
+			'yoastseo-amp' => array(
+				'url'           => 'https://wordpress.org/plugins/glue-for-yoast-seo-amp/',
+				'title'         => 'Yoast SEO AMP Glue',
+				'description'   => sprintf(
+					/* translators: %1$s expands to Yoast SEO */
+					__( 'Seamlessly integrate %1$s into your AMP pages!', 'wordpress-seo' ),
+					'Yoast SEO'
+				),
+				'installed'     => false,
+				'slug'          => 'glue-for-yoast-seo-amp/yoastseo-amp.php',
+				'_dependencies' => array(
+					'AMP' => array(
+						'slug' => 'amp/amp.php',
+					),
+				),
+				'version_sync'  => false,
+			),
+		);
 	}
 
 	/**
@@ -162,7 +178,7 @@ class WPSEO_Plugin_Availability {
 	 */
 	public function get_plugin( $plugin ) {
 		if ( ! $this->plugin_exists( $plugin ) ) {
-			return [];
+			return array();
 		}
 
 		return $this->plugins[ $plugin ];
@@ -203,7 +219,7 @@ class WPSEO_Plugin_Availability {
 	 */
 	public function get_dependencies( $plugin ) {
 		if ( ! $this->has_dependencies( $plugin ) ) {
-			return [];
+			return array();
 		}
 
 		return $plugin['_dependencies'];
@@ -222,7 +238,7 @@ class WPSEO_Plugin_Availability {
 		}
 
 		$dependencies           = $this->get_dependencies( $plugin );
-		$installed_dependencies = array_filter( $dependencies, [ $this, 'is_dependency_available' ] );
+		$installed_dependencies = array_filter( $dependencies, array( $this, 'is_dependency_available' ) );
 
 		return count( $installed_dependencies ) === count( $dependencies );
 	}
@@ -248,7 +264,7 @@ class WPSEO_Plugin_Availability {
 	 * @return array The installed plugins.
 	 */
 	public function get_installed_plugins() {
-		$installed = [];
+		$installed = array();
 
 		foreach ( $this->plugins as $plugin_key => $plugin ) {
 			if ( $this->is_installed( $plugin ) ) {
@@ -290,7 +306,7 @@ class WPSEO_Plugin_Availability {
 	 */
 	public function get_dependency_names( $plugin ) {
 		if ( ! $this->has_dependencies( $plugin ) ) {
-			return [];
+			return array();
 		}
 
 		return array_keys( $plugin['_dependencies'] );
@@ -302,7 +318,7 @@ class WPSEO_Plugin_Availability {
 	 * @return array Array of the plugins that have dependencies.
 	 */
 	public function get_plugins_with_dependencies() {
-		return array_filter( $this->plugins, [ $this, 'has_dependencies' ] );
+		return array_filter( $this->plugins, array( $this, 'has_dependencies' ) );
 	}
 
 	/**

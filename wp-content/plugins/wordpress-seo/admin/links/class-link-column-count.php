@@ -11,11 +11,9 @@
 class WPSEO_Link_Column_Count {
 
 	/**
-	 * The link counts for each post id on the current page.
-	 *
 	 * @var array
 	 */
-	protected $count = [];
+	protected $count = array();
 
 	/**
 	 * Sets the counts for the set target field.
@@ -70,21 +68,21 @@ class WPSEO_Link_Column_Count {
 			ARRAY_A
 		);
 
-		$output = [];
+		$output = array();
 		foreach ( $results as $result ) {
-			$output[ (int) $result['object_id'] ] = [
+			$output[ (int) $result['object_id'] ] = array(
 				'internal_link_count' => $result['internal_link_count'],
 				'incoming_link_count' => (int) $result['incoming_link_count'],
-			];
+			);
 		}
 
 		// Set unfound items to zero.
 		foreach ( $post_ids as $post_id ) {
 			if ( ! array_key_exists( $post_id, $output ) ) {
-				$output[ $post_id ] = [
+				$output[ $post_id ] = array(
 					'internal_link_count' => null,
 					'incoming_link_count' => 0,
-				];
+				);
 			}
 		}
 

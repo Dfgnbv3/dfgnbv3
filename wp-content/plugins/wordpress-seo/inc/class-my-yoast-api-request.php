@@ -22,13 +22,14 @@ class WPSEO_MyYoast_Api_Request {
 	 *
 	 * @var array
 	 */
-	protected $args = [
+	protected $args = array(
 		'method'    => 'GET',
 		'timeout'   => 5,
-		'headers'   => [
+		'sslverify' => false,
+		'headers'   => array(
 			'Accept-Encoding' => '*',
-		],
-	];
+		),
+	);
 
 	/**
 	 * Contains the fetched response.
@@ -59,7 +60,7 @@ class WPSEO_MyYoast_Api_Request {
 	 * @param string $url  The request url.
 	 * @param array  $args The request arguments.
 	 */
-	public function __construct( $url, array $args = [] ) {
+	public function __construct( $url, array $args = array() ) {
 		$this->url  = 'https://my.yoast.com/api/' . $url;
 		$this->args = wp_parse_args( $args, $this->args );
 	}
@@ -200,7 +201,7 @@ class WPSEO_MyYoast_Api_Request {
 	 * @return array The enriched arguments.
 	 */
 	protected function enrich_request_arguments( array $request_arguments ) {
-		$request_arguments     = wp_parse_args( $request_arguments, [ 'headers' => [] ] );
+		$request_arguments     = wp_parse_args( $request_arguments, array( 'headers' => array() ) );
 		$addon_version_headers = $this->get_installed_addon_versions();
 
 		foreach ( $addon_version_headers as $addon => $version ) {
@@ -208,7 +209,7 @@ class WPSEO_MyYoast_Api_Request {
 		}
 
 		$request_body = $this->get_request_body();
-		if ( $request_body !== [] ) {
+		if ( $request_body !== array() ) {
 			$request_arguments['body'] = $request_body;
 		}
 
@@ -224,21 +225,21 @@ class WPSEO_MyYoast_Api_Request {
 	 */
 	public function get_request_body() {
 		if ( ! $this->has_oauth_support() ) {
-			return [ 'url' => WPSEO_Utils::get_home_url() ];
+			return array( 'url' => WPSEO_Utils::get_home_url() );
 		}
 
 		try {
 			$access_token = $this->get_access_token();
 			if ( $access_token ) {
-				return [ 'token' => $access_token->getToken() ];
+				return array( 'token' => $access_token->getToken() );
 			}
 		}
-		// @codingStandardsIgnoreLine Generic.CodeAnalysis.EmptyStatement.DetectedCATCH -- There is nothing to do.
+			// @codingStandardsIgnoreLine Generic.CodeAnalysis.EmptyStatement.DetectedCATCH -- There is nothing to do.
 		catch ( WPSEO_MyYoast_Bad_Request_Exception $bad_request ) {
 			// Do nothing.
 		}
 
-		return [];
+		return array();
 	}
 
 	/**
@@ -271,9 +272,9 @@ class WPSEO_MyYoast_Api_Request {
 				->get_provider()
 				->getAccessToken(
 					'refresh_token',
-					[
+					array(
 						'refresh_token' => $access_token->getRefreshToken(),
-					]
+					)
 				);
 
 			$client->save_access_token( $this->get_current_user_id(), $access_token );

@@ -11,11 +11,9 @@
 class WPSEO_Extension {
 
 	/**
-	 * Holds the extension config.
-	 *
 	 * @var array
 	 */
-	protected $config = [];
+	protected $config = array();
 
 	/**
 	 * WPSEO_Extension constructor.

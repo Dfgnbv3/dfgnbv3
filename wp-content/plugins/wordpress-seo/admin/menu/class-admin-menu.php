@@ -17,7 +17,7 @@ class WPSEO_Admin_Menu extends WPSEO_Base_Menu {
 	 */
 	public function register_hooks() {
 		// Needs the lower than default priority so other plugins can hook underneath it without issue.
-		add_action( 'admin_menu', [ $this, 'register_settings_page' ], 5 );
+		add_action( 'admin_menu', array( $this, 'register_settings_page' ), 5 );
 	}
 
 	/**
@@ -72,27 +72,32 @@ class WPSEO_Admin_Menu extends WPSEO_Base_Menu {
 	public function get_submenu_pages() {
 		global $wpseo_admin;
 
-		$search_console_callback = null;
+		$search_console_callback       = null;
+		$search_console_hook_callbacks = null;
 
 		// Account for when the available submenu pages are requested from outside the admin.
 		if ( isset( $wpseo_admin ) ) {
-			$google_search_console   = new WPSEO_GSC();
-			$search_console_callback = [ $google_search_console, 'display' ];
+			$admin_features = $wpseo_admin->get_admin_features();
+
+			$search_console_callback       = array( $admin_features['google_search_console'], 'display' );
+			$search_console_hook_callbacks = array( array( $admin_features['google_search_console'], 'set_help' ) );
 		}
 
 		// Submenu pages.
-		$submenu_pages = [
+		$submenu_pages = array(
 			$this->get_submenu_page( __( 'General', 'wordpress-seo' ), $this->get_page_identifier() ),
 			$this->get_submenu_page( __( 'Search Appearance', 'wordpress-seo' ), 'wpseo_titles' ),
 			$this->get_submenu_page(
 				__( 'Search Console', 'wordpress-seo' ),
 				'wpseo_search_console',
-				$search_console_callback
+				$search_console_callback,
+				$search_console_hook_callbacks
 			),
 			$this->get_submenu_page( __( 'Social', 'wordpress-seo' ), 'wpseo_social' ),
 			$this->get_submenu_page( __( 'Tools', 'wordpress-seo' ), 'wpseo_tools' ),
 			$this->get_submenu_page( $this->get_license_page_title(), 'wpseo_licenses' ),
-		];
+			$this->get_submenu_page( __( 'Courses', 'wordpress-seo' ), 'wpseo_courses' ),
+		);
 
 		/**
 		 * Filter: 'wpseo_submenu_pages' - Collects all submenus that need to be shown.

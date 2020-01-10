@@ -11,22 +11,16 @@
 class WPSEO_Endpoint_File_Size implements WPSEO_Endpoint {
 
 	/**
-	 * The namespace of the REST route.
-	 *
 	 * @var string
 	 */
 	const REST_NAMESPACE = 'yoast/v1';
 
 	/**
-	 * The route of the endpoint to retrieve the file size.
-	 *
 	 * @var string
 	 */
 	const ENDPOINT_SINGULAR = 'file_size';
 
 	/**
-	 * The name of the capability needed to retrieve data using the endpoints.
-	 *
 	 * @var string
 	 */
 	const CAPABILITY_RETRIEVE = 'manage_options';
@@ -53,24 +47,24 @@ class WPSEO_Endpoint_File_Size implements WPSEO_Endpoint {
 	 * @return void
 	 */
 	public function register() {
-		$route_args = [
+		$route_args = array(
 			'methods'             => 'GET',
-			'args'                => [
-				'url' => [
+			'args'                => array(
+				'url' => array(
 					'required'    => true,
 					'type'        => 'string',
 					'description' => 'The url to retrieve',
-				],
-			],
-			'callback'            => [
+				),
+			),
+			'callback'            => array(
 				$this->service,
 				'get',
-			],
-			'permission_callback' => [
+			),
+			'permission_callback' => array(
 				$this,
 				'can_retrieve_data',
-			],
-		];
+			),
+		);
 		register_rest_route( self::REST_NAMESPACE, self::ENDPOINT_SINGULAR, $route_args );
 	}
 

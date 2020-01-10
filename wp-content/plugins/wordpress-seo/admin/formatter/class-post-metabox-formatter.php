@@ -11,8 +11,6 @@
 class WPSEO_Post_Metabox_Formatter implements WPSEO_Metabox_Formatter_Interface {
 
 	/**
-	 * Holds the WordPress Post.
-	 *
 	 * @var WP_Post
 	 */
 	private $post;
@@ -25,13 +23,6 @@ class WPSEO_Post_Metabox_Formatter implements WPSEO_Metabox_Formatter_Interface 
 	private $permalink;
 
 	/**
-	 * The date helper.
-	 *
-	 * @var WPSEO_Date_Helper
-	 */
-	protected $date;
-
-	/**
 	 * Constructor.
 	 *
 	 * @param WP_Post|array $post      Post object.
@@ -41,7 +32,6 @@ class WPSEO_Post_Metabox_Formatter implements WPSEO_Metabox_Formatter_Interface 
 	public function __construct( $post, array $options, $structure ) {
 		$this->post      = $post;
 		$this->permalink = $structure;
-		$this->date      = new WPSEO_Date_Helper();
 	}
 
 	/**
@@ -50,43 +40,25 @@ class WPSEO_Post_Metabox_Formatter implements WPSEO_Metabox_Formatter_Interface 
 	 * @return array
 	 */
 	public function get_values() {
-		$values = [
+		$values = array(
 			'search_url'          => $this->search_url(),
 			'post_edit_url'       => $this->edit_url(),
 			'base_url'            => $this->base_url_for_js(),
 			'metaDescriptionDate' => '',
-
-		];
+		);
 
 		if ( $this->post instanceof WP_Post ) {
-			$values_to_set = [
-				'keyword_usage'            => $this->get_focus_keyword_usage(),
-				'title_template'           => $this->get_title_template(),
-				'metadesc_template'        => $this->get_metadesc_template(),
-				'metaDescriptionDate'      => $this->get_metadesc_date(),
-				'social_preview_image_url' => $this->get_image_url(),
-			];
+			$values_to_set = array(
+				'keyword_usage'       => $this->get_focus_keyword_usage(),
+				'title_template'      => $this->get_title_template(),
+				'metadesc_template'   => $this->get_metadesc_template(),
+				'metaDescriptionDate' => $this->get_metadesc_date(),
+			);
 
 			$values = ( $values_to_set + $values );
 		}
 
 		return $values;
-	}
-
-	/**
-	 * Gets the image URL for the post's social preview.
-	 *
-	 * @return string|null The image URL for the social preview.
-	 */
-	protected function get_image_url() {
-		$post_id = $this->post->ID;
-
-		if ( has_post_thumbnail( $post_id ) ) {
-			$featured_image_info = wp_get_attachment_image_src( get_post_thumbnail_id( $post_id ), 'thumbnail' );
-			return $featured_image_info[0];
-		}
-
-		return WPSEO_Image_Utils::get_first_usable_content_image_for_post( $post_id );
 	}
 
 	/**
@@ -137,7 +109,7 @@ class WPSEO_Post_Metabox_Formatter implements WPSEO_Metabox_Formatter_Interface 
 	 */
 	private function get_focus_keyword_usage() {
 		$keyword = WPSEO_Meta::get_value( 'focuskw', $this->post->ID );
-		$usage   = [ $keyword => $this->get_keyword_usage_for_current_post( $keyword ) ];
+		$usage   = array( $keyword => $this->get_keyword_usage_for_current_post( $keyword ) );
 
 		if ( WPSEO_Utils::is_yoast_seo_premium() ) {
 			return $this->get_premium_keywords( $usage );
@@ -230,7 +202,7 @@ class WPSEO_Post_Metabox_Formatter implements WPSEO_Metabox_Formatter_Interface 
 		$date = '';
 
 		if ( $this->is_show_date_enabled() ) {
-			$date = $this->date->format_translated( $this->post->post_date, 'M j, Y' );
+			$date = date_i18n( 'M j, Y', mysql2date( 'U', $this->post->post_date ) );
 		}
 
 		return $date;

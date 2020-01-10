@@ -11,8 +11,6 @@
 abstract class WPSEO_Recalculate {
 
 	/**
-	 * Recalculations per page.
-	 *
 	 * @var int
 	 */
 	protected $items_per_page = 20;
@@ -50,7 +48,7 @@ abstract class WPSEO_Recalculate {
 	 * @return array Items that can be recalculated.
 	 */
 	public function get_items_to_recalculate( $paged ) {
-		$return = [];
+		$return = array();
 
 		$paged = abs( $paged );
 
@@ -74,7 +72,7 @@ abstract class WPSEO_Recalculate {
 	 * @return array
 	 */
 	protected function parse_items( array $items ) {
-		$return = [];
+		$return = array();
 		foreach ( $items as $item ) {
 			$response = $this->item_to_response( $item );
 			if ( ! empty( $response ) ) {

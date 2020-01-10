@@ -11,24 +11,20 @@
 class WPSEO_Configuration_Storage {
 
 	/**
-	 * Holds the configuration options adapter.
-	 *
 	 * @var \WPSEO_Configuration_Options_Adapter
 	 */
 	protected $adapter;
 
 	/**
-	 * Holds the configuration fields.
-	 *
 	 * @var \WPSEO_Config_Field[]
 	 */
-	protected $fields = [];
+	protected $fields = array();
 
 	/**
 	 * Add default fields.
 	 */
 	public function add_default_fields() {
-		$fields = [
+		$fields = array(
 			new WPSEO_Config_Field_Upsell_Configuration_Service(),
 			new WPSEO_Config_Field_Upsell_Site_Review(),
 			new WPSEO_Config_Field_Success_Message(),
@@ -39,6 +35,7 @@ class WPSEO_Configuration_Storage {
 			new WPSEO_Config_Field_Title_Intro(),
 			new WPSEO_Config_Field_Site_Name(),
 			new WPSEO_Config_Field_Separator(),
+			new WPSEO_Config_Field_Google_Search_Console_Intro(),
 			new WPSEO_Config_Field_Profile_URL_Facebook(),
 			new WPSEO_Config_Field_Profile_URL_Twitter(),
 			new WPSEO_Config_Field_Profile_URL_Instagram(),
@@ -48,12 +45,11 @@ class WPSEO_Configuration_Storage {
 			new WPSEO_Config_Field_Profile_URL_YouTube(),
 			new WPSEO_Config_Field_Profile_URL_Wikipedia(),
 			new WPSEO_Config_Field_Company_Or_Person(),
-			new WPSEO_Config_Field_Company_Info_Missing(),
 			new WPSEO_Config_Field_Company_Name(),
 			new WPSEO_Config_Field_Company_Logo(),
 			new WPSEO_Config_Field_Person(),
 			new WPSEO_Config_Field_Post_Type_Visibility(),
-		];
+		);
 
 		$post_type_factory = new WPSEO_Config_Factory_Post_Type();
 		$fields            = array_merge( $fields, $post_type_factory->get_fields() );
@@ -104,8 +100,9 @@ class WPSEO_Configuration_Storage {
 	 * @returns array List of settings.
 	 */
 	public function retrieve() {
-		$output = [];
+		$output = array();
 
+		/** @var WPSEO_Config_Field $field */
 		foreach ( $this->fields as $field ) {
 
 			$build = $field->to_array();
@@ -129,8 +126,9 @@ class WPSEO_Configuration_Storage {
 	 * @return string Results
 	 */
 	public function store( $data_to_store ) {
-		$output = [];
+		$output = array();
 
+		/** @var WPSEO_Config_Field $field */
 		foreach ( $this->fields as $field ) {
 
 			$field_identifier = $field->get_identifier();
@@ -139,16 +137,16 @@ class WPSEO_Configuration_Storage {
 				continue;
 			}
 
-			$field_data = [];
+			$field_data = array();
 			if ( isset( $data_to_store[ $field_identifier ] ) ) {
 				$field_data = $data_to_store[ $field_identifier ];
 			}
 
 			$result = $this->adapter->set( $field, $field_data );
 
-			$build = [
+			$build = array(
 				'result' => $result,
-			];
+			);
 
 			// Set current data to object to be displayed.
 			$data = $this->get_field_data( $field );
@@ -187,7 +185,7 @@ class WPSEO_Configuration_Storage {
 			$defaults = $field->get_data();
 
 			// Remove 'null' values from input.
-			$data = array_filter( $data, [ $this, 'is_not_null' ] );
+			$data = array_filter( $data, array( $this, 'is_not_null' ) );
 
 			// Merge defaults with data.
 			$data = array_merge( $defaults, $data );

@@ -13,7 +13,6 @@
  * @property int    $company_logo_id           Holds the company logo's ID, if the site represents a company.
  * @property int    $id                        The post ID, if there is one.
  * @property string $site_name                 The site's name.
- * @property string $site_description          The site's tagline.
  * @property string $site_represents           Whether this site represents a `company` or a `person`.
  * @property string $site_url                  The site's URL.
  * @property int    $site_user_id              The site's user ID if a site represents a `person`.
@@ -68,13 +67,6 @@ class WPSEO_Schema_Context {
 	 * @var string
 	 */
 	public $site_name;
-
-	/**
-	 * The site's tagline.
-	 *
-	 * @var string
-	 */
-	public $site_description;
 
 	/**
 	 * The site's URL.
@@ -144,9 +136,8 @@ class WPSEO_Schema_Context {
 		$this->id          = get_queried_object_id();
 
 		// Site level variables.
-		$this->site_name        = $this->set_site_name();
-		$this->site_description = get_bloginfo( 'description' );
-		$this->site_url         = trailingslashit( WPSEO_Utils::home_url() );
+		$this->site_name = $this->set_site_name();
+		$this->site_url  = trailingslashit( WPSEO_Utils::home_url() );
 
 		$this->set_breadcrumbs_variables();
 		$this->set_site_represents_variables();
@@ -173,11 +164,11 @@ class WPSEO_Schema_Context {
 		$this->site_represents_reference = false;
 
 		if ( $this->site_represents === 'person' ) {
-			$this->site_represents_reference = [ '@id' => WPSEO_Schema_Utils::get_user_schema_id( $this->site_user_id, $this ) ];
+			$this->site_represents_reference = array( '@id' => WPSEO_Schema_Utils::get_user_schema_id( $this->site_user_id, $this ) );
 		}
 
 		if ( $this->site_represents === 'company' ) {
-			$this->site_represents_reference = [ '@id' => $this->site_url . WPSEO_Schema_IDs::ORGANIZATION_HASH ];
+			$this->site_represents_reference = array( '@id' => $this->site_url . WPSEO_Schema_IDs::ORGANIZATION_HASH );
 		}
 	}
 
@@ -189,29 +180,14 @@ class WPSEO_Schema_Context {
 
 		switch ( $this->site_represents ) {
 			case 'company':
-				$company_name = WPSEO_Options::get( 'company_name' );
-
-				/**
-				 * Filter: 'wpseo_schema_company_name' - Allows filtering company name
-				 *
-				 * @api string $company_name.
-				 */
-				$this->company_name = apply_filters( 'wpseo_schema_company_name', $company_name );
-
+				$this->company_name = WPSEO_Options::get( 'company_name' );
 				// Do not use a non-named company.
 				if ( empty( $this->company_name ) ) {
 					$this->site_represents = false;
 					break;
 				}
 
-				$company_logo_id = WPSEO_Image_Utils::get_attachment_id_from_settings( 'company_logo' );
-
-				/**
-				 * Filter: 'wpseo_schema_company_logo_id' - Allows filtering company logo id
-				 *
-				 * @api integer $company_logo_id.
-				 */
-				$this->company_logo_id = apply_filters( 'wpseo_schema_company_logo_id', $company_logo_id );
+				$this->company_logo_id = WPSEO_Image_Utils::get_attachment_id_from_settings( 'company_logo' );
 
 				/*
 				 * Do not use a company without a logo.
